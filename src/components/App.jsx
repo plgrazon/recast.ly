@@ -1,6 +1,6 @@
 class App extends React.Component {
   constructor() {
-    super();
+    super(); 
 
     this.state = {
       video: window.exampleVideoData[0],
@@ -9,10 +9,26 @@ class App extends React.Component {
   }
 
   onListItemClick(inputVid) {
-    console.log(this);
     this.setState({
       video: inputVid,
-    })
+    });
+  }
+  
+  onSearchClick(query) {
+    console.log('clicked')
+    
+    var options = {
+      query: query,
+      max: 5,
+      key: window.YOUTUBE_API_KEY,
+    };
+    
+    searchYoutube(options, function(data) {
+      this.setState({
+        this.video = data[0];
+        this.videos = data;
+      });
+    });
   }
 
   render() {
@@ -20,7 +36,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search />
+            <Search onSearchClick={this.onSearchClick.bind(this)}/>
           </div>
         </nav>
         <div className="row">
