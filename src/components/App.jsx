@@ -5,8 +5,11 @@ class App extends React.Component {
     this.state = {
       video: window.exampleVideoData[0],
       videos: window.exampleVideoData,
+      query: '',
     };
   }
+
+  ////// Video List Entry functions /////////////////////////////
 
   onListItemClick(inputVid) {
     this.setState({
@@ -14,29 +17,37 @@ class App extends React.Component {
     });
   }
   
-  onSearchClick(query) {
-    console.log('clicked')
-    
-    var options = {
-      query: query,
-      max: 5,
-      key: window.YOUTUBE_API_KEY,
-    };
-    
-    searchYoutube(options, function(data) {
-      this.setState({
-        this.video = data[0];
-        this.videos = data;
-      });
+  ////// Search functions //////////////////////////////////////
+
+  searchCallBack(data) {
+    this.setState({
+      video: data.items[0],
+      videos: data.items
     });
   }
-
+  
+  onChange(event) {
+    this.setState({query: event.target.value});
+  }
+  
+  onSearchClick() {
+    var options = {
+      q: this.state.query,
+      maxResults: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+    
+    window.searchYouTube(options, this.searchCallBack.bind(this))
+  }
+  
+  ////// Render Here ////////////////////////////////////////////
+  
   render() {
     return(
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search onSearchClick={this.onSearchClick.bind(this)}/>
+            <Search onChange={this.onChange.bind(this)} onSearchClick={this.onSearchClick.bind(this)}/>
           </div>
         </nav>
         <div className="row">

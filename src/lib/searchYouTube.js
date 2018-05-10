@@ -1,21 +1,18 @@
 var searchYouTube = (options, callback) => {
+  // This fetches the data from the server, in this case, Youtube
   $.ajax({
     url: 'https://www.googleapis.com/youtube/v3/search',
-    type: 'GET',
+    method: 'GET',
     data: {
       part: 'snippet',
       q: options.q,
-      key: options.key
-      maxResults: options.max,
-      videEmbeddable: true,
+      key: options.key,
+      maxResults: options.maxResults,
+      videoEmbeddable: true,
       type: 'video'
     },
-    
-    contentType: 'application/json',
-    
     success: (data) => {
-      console.log(data);
-      callback(data.items);
+      callback(data);
     },
     
     error: (data) => {
