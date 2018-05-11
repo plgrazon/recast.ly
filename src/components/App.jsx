@@ -28,6 +28,14 @@ class App extends React.Component {
   
   onChange(event) {
     this.setState({query: event.target.value});
+    
+    var options = {
+      q: this.state.query,
+      maxResults: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+    
+    window.searchYouTube(options, this.searchCallBack.bind(this));
   }
   
   onSearchClick() {
@@ -37,8 +45,27 @@ class App extends React.Component {
       key: window.YOUTUBE_API_KEY
     };
     
-    window.searchYouTube(options, this.searchCallBack.bind(this))
+    window.searchYouTube(options, this.searchCallBack.bind(this));
   }
+  
+  ////// Live Here //////////////////////////////////////////////
+  
+  componentDidMount(){
+    // this.setState({
+    //   query: 'ball'
+    // });
+    
+    window.searchYouTube({q: 'ball', maxResults: 5, key: window.YOUTUBE_API_KEY}, this.searchCallBack.bind(this));
+
+    
+    var options = {
+      q: this.state.query,
+      maxResults: 5,
+      key: window.YOUTUBE_API_KEY
+    };
+    window.searchYouTube(options, this.searchCallBack.bind(this));
+  }
+
   
   ////// Render Here ////////////////////////////////////////////
   
@@ -61,7 +88,7 @@ class App extends React.Component {
       </div>
     );
   }
-};
+}
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined
